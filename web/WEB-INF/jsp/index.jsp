@@ -11,7 +11,7 @@
     <c:url value="/task/" var="showTaskUrl" />
     <a href="${showTaskUrl}">link</a>
     <br>
-    <c:url value="/task/add" var="create" />
+    <c:url value="/task/add/" var="create" />
     <a href="${create}">link2</a>
 </body>
 </html>

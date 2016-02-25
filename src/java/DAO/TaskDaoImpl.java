@@ -55,7 +55,7 @@ public class TaskDaoImpl implements TaskDao {
     @Override
     public Task addTask(Task task) {
         try {
-            String query = "INSERT INTO task ('name','description','due_date') VALUES (?, ?, ?)";
+            String query = "INSERT INTO task (name, description, due_date) VALUES (?, ?, ?)";
             PreparedStatement stmt = datasource.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             stmt.setString(1, task.getName());
             stmt.setString(2, task.getDescription());
@@ -96,13 +96,8 @@ public class TaskDaoImpl implements TaskDao {
                 return null;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Произошла ошибка во время вызова метода", e);
+            throw new RuntimeException("Произошла ошибка во время вызова метода getTaskById", e);
         }
-    }
-
-    @Override
-    public Task updateTask(Task task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -114,7 +109,23 @@ public class TaskDaoImpl implements TaskDao {
             statement.execute();
             return true;
         } catch (Exception e) {
-            throw new RuntimeException("Произошла ошибка во время вызова метода", e);
+            throw new RuntimeException("Произошла ошибка во время вызова метода deleteTask", e);
+        }
+    }
+
+    @Override
+    public boolean editTask(Task task) {
+        try {
+            String query = "UPDATE task SET name=?, description=?, due_date=? WHERE idTask=?";
+            PreparedStatement statement = datasource.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setString(1, task.getName());
+            statement.setString(2, task.getDescription());
+            statement.setDate(3, task.getDueDate());
+            statement.setInt(4, task.getId());
+            statement.execute();
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Произошла ошибка во время вызова метода editTask", e);
         }
     }
 }

@@ -21,7 +21,7 @@ public interface TaskDao {
 
     Task addTask(Task task);
 
-    Task updateTask(Task task);
-
     boolean deleteTask(Task task);
+
+    public boolean editTask(Task task);
 }

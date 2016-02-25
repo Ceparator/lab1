@@ -9,7 +9,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Добавление задачи</h1> 
+        <h1 class="title">${title}</h1>
         <form action="<c:url value="${sendURL}"/>" method="POST">
             <c:if test="${task.id != null}">
                 <input type="hidden" name="id" value="${task.id}"/>
