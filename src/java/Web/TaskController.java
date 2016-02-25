@@ -57,6 +57,7 @@ public class TaskController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addTask(Model model) {
+        model.addAttribute("title", "Создание задачи");
         model.addAttribute("sendURL", "/task/add");
         return "/task/create";
     }
@@ -70,14 +71,13 @@ public class TaskController {
     task = taskDao.addTask(task);
     return "redirect:/task/" + task.getId();
     }*/
-    
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTask(@ModelAttribute Task task, Model model) {
         taskDao.addTask(task);
         return "redirect:/task/list";
     }
-    
-        @RequestMapping(value = "/{id}/remove", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/{id}/remove", method = RequestMethod.GET)
     public String removeTask(@PathVariable("id") int id, Model ui) {
         ui.addAttribute("task", taskDao.getTaskById(id));
         return "/task/remove";
@@ -98,23 +98,27 @@ public class TaskController {
     throw new NotFoundException();
     }
     return "redirect:/task";
+    }   */
+    
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public String editTask(@PathVariable("id") int id, Model model) {
+        Task task = taskDao.getTaskById(id);
+        if (task == null) {
+            throw new NotFoundException();
+        }
+        model.addAttribute("title", "Редактирование задачи");
+        model.addAttribute("sendURL", "/task/editConfirm");
+        model.addAttribute("task", task);
+        return "/task/create";
     }
 
-        @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
-    public String editTask(@PathVariable("id") int id, Model ui) {
-    ui.addAttribute("sendURL", "/task/editConfirm");
-    ui.addAttribute("task", taskDao.getTaskById(id));
-    return "/task/list";
-    }
-    
     @RequestMapping(value = "/editConfirm", method = RequestMethod.POST)
     public String editTask(@ModelAttribute Task task, Model ui) {
-    if (taskDao.editTask(task)) {
-    return "redirect:/forecast/list";
-    } else {
-    return "redirect:/fail";
+        if (taskDao.editTask(task)) {
+            return "redirect:/task/list";
+        } else {
+            return "redirect:/task/";
+        }
     }
-    }
-     */
 
 }
